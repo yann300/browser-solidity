@@ -146,11 +146,12 @@ module.exports = {
       details.append(this.tableRow('Runtime Bytecode', contract.runtimeBytecode));
     }
 
+    /*
     if (contract.assembly !== null) {
       details.append($('<span class="col1">Assembly</span>'));
-      var assembly = $('<pre/>').text(this.formatAssemblyText(contract.assembly, '', source));
+      var assembly = $('<pre/>').text(this.formatAssemblyText(contract.assembly, '', source[contractName]));
       details.append(assembly);
-    }
+    }*/
 
     var self = this;
     button.click(function () { self.detailsOpen[contractName] = !self.detailsOpen[contractName]; details.toggle(); });
