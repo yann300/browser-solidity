@@ -109,9 +109,6 @@ var run = function () {
       el.parent().find('li').removeClass('active');
       $('#optionViews').attr('class', '').addClass(cls);
       el.addClass('active');
-    } else {
-      el.removeClass('active');
-      $('#optionViews').removeClass(cls);
     }
     self.event.trigger('tabChanged', [cls]);
   };

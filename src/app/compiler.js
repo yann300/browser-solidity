@@ -106,13 +106,11 @@ function Compiler (editor, queryParams, handleGithubCall, updateFiles) {
     var noFatalErrors = true; // ie warnings are ok
 
     if (data['error'] !== undefined) {
-      self.event.trigger('compilationFinished', [false, [data['error']], source]);
       if (utils.errortype(data['error']) !== 'warning') {
         noFatalErrors = false;
       }
     }
     if (data['errors'] !== undefined) {
-      self.event.trigger('compilationFinished', [false, data['errors'], source]);
       data['errors'].forEach(function (err) {
         if (utils.errortype(err) !== 'warning') {
           noFatalErrors = false;
@@ -120,9 +118,11 @@ function Compiler (editor, queryParams, handleGithubCall, updateFiles) {
       });
     }
 
-    if (missingInputs !== undefined && missingInputs.length > 0) {
+    if (!noFatalErrors) {
+      self.event.trigger('compilationFinished', [false, data, source]);
+    } else if (missingInputs !== undefined && missingInputs.length > 0) {
       compile(missingInputs);
-    } else if (noFatalErrors) {
+    } else {
       self.lastCompilationResult = {
         data: data,
         source: source

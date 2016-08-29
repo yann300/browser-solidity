@@ -28,7 +28,6 @@ function Debugger (id, editor, compiler, executionContextEvent, switchToFile) {
   });
 
   this.debugger.register('traceUnloaded', this, function () {
-    self.lastCompilationResult = null;
     self.removeCurrentMarker()
     self.cache.clear()
   });
@@ -48,10 +47,13 @@ function Debugger (id, editor, compiler, executionContextEvent, switchToFile) {
         }
         var lineColumnPos = self.sourceMappingDecoder.convertOffsetToLineColumn(rawLocation, self.cache.lineBreakPositionsByContent[address])
         self.highlight(lineColumnPos, rawLocation);
+      } else {
+        self.removeCurrentMarker()
       }
     });
   });
-}
+};
+
 
 /**
  * Start debugging using Remix
