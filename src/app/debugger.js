@@ -41,12 +41,15 @@ function Debugger (id, editor, compiler, executionContextEvent, switchToFile) {
   // register selected code item, highlight the corresponding source location
   this.debugger.codeManager.register('changed', this, function (code, address, index) {
     this.debugger.sourceLocationTracker.getSourceLocation(address, index, self.lastCompilationResult.data.contracts, function (error, rawLocation) {
+      if (!self.lastCompilationResult) {
+        return
+      }
       if (!error) {
         if (!self.cache.lineBreakPositionsByContent[address]) {
           self.cache.lineBreakPositionsByContent[address] = self.sourceMappingDecoder.getLinebreakPositions(self.editor.getFile(self.lastCompilationResult.data.sourceList[rawLocation.file]))  
         }
         var lineColumnPos = self.sourceMappingDecoder.convertOffsetToLineColumn(rawLocation, self.cache.lineBreakPositionsByContent[address])
-        self.highlight(lineColumnPos, rawLocation);
+        self.highlight(lineColumnPos, rawLocation)
       } else {
         self.removeCurrentMarker()
       }
@@ -64,7 +67,7 @@ Debugger.prototype.debug = function (txHash) {
   var self = this;
   this.debugger.web3().eth.getTransaction(txHash, function (error, tx) {
     if (!error) {
-      self.debugger.debug(tx);
+      self.debugger.debug(tx, self.compiler.lastCompilationResult); 
     }
   });
 };
