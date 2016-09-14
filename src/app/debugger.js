@@ -65,7 +65,7 @@ Debugger.prototype.debug = function (txHash) {
   var self = this;
   this.debugger.web3().eth.getTransaction(txHash, function (error, tx) {
     if (!error) {
-      self.debugger.debug(tx);
+      self.debugger.debug(tx, self.compiler.lastCompilationResult);
     }
   });
 };
