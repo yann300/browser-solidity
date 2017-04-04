@@ -9,6 +9,21 @@ var EventManager = require('./lib/eventManager')
 var crypto = require('crypto')
 var async = require('async')
 var TxRunner = require('./app/txRunner')
+var csjs = require('csjs-inject')
+
+var css = csjs`
+  .options {
+      float: left;
+      padding: 0.7em 0.3em;
+      font-size: 0.9em;
+      cursor: pointer;
+      background-color: transparent;
+      margin-right: 0.5em;
+      font-size: 1em;
+  }
+`
+;[...document.querySelectorAll('#header #options li')].forEach(addCss)
+function addCss (el) { el.classList.add(css.options) }
 
 /*
   trigger debugRequested
