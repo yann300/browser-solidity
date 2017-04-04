@@ -1,4 +1,4 @@
-/* global confirm */
+/* global confirm, prompt */
 'use strict'
 
 var $ = require('jquery')
@@ -94,39 +94,17 @@ function ExecutionContext () {
   this.setContext = function (context) {
     executionContext = context
     executionContextChange(context)
-    setExecutionContextRadio()
   }
 
-  var $injectedToggle = $('#injected-mode')
-  var $vmToggle = $('#vm-mode')
-  var $web3Toggle = $('#web3-mode')
   var $web3endpoint = $('#web3Endpoint')
 
   if (web3.providers && web3.currentProvider instanceof web3.providers.IpcProvider) {
     $web3endpoint.val('ipc')
   }
 
-  setExecutionContextRadio()
-
-  $injectedToggle.on('change', executionContextUIChange)
-  $vmToggle.on('change', executionContextUIChange)
-  $web3Toggle.on('change', executionContextUIChange)
-  $web3endpoint.on('change', function () {
-    setProviderFromEndpoint()
-    if (executionContext === 'web3') {
-      self.event.trigger('web3EndpointChanged')
-    }
-  })
-
-  function executionContextUIChange (ev) {
-    executionContextChange(ev.target.value)
-  }
-
   function executionContextChange (context) {
     if (context === 'web3' && !confirm('Are you sure you want to connect to a local ethereum node?')) {
-      setExecutionContextRadio()
     } else if (context === 'injected' && injectedProvider === undefined) {
-      setExecutionContextRadio()
     } else {
       if (context === 'web3') {
         executionContext = context
@@ -146,8 +124,7 @@ function ExecutionContext () {
     }
   }
 
-  function setProviderFromEndpoint () {
-    var endpoint = $web3endpoint.val()
+  function setProviderFromEndpoint (endpoint) {
     if (endpoint === 'ipc') {
       web3.setProvider(new web3.providers.IpcProvider())
     } else {
@@ -155,13 +132,22 @@ function ExecutionContext () {
     }
   }
 
-  function setExecutionContextRadio () {
-    if (executionContext === 'injected') {
-      $injectedToggle.get(0).checked = true
-    } else if (executionContext === 'vm') {
-      $vmToggle.get(0).checked = true
-    } else if (executionContext === 'web3') {
-      $web3Toggle.get(0).checked = true
+  /* ---------------------------------------------------------------------------
+  DROPDOWN
+  --------------------------------------------------------------------------- */
+
+  var selectExEnv = document.querySelector('#selectExEnv')
+  selectExEnv.addEventListener('change', optionSelected)
+  function optionSelected (event) {
+    var selectedValue = selectExEnv.options[ selectExEnv.selectedIndex ].value
+    if (selectedValue === 'injected') { executionContextChange(selectedValue) }
+    if (selectedValue === 'vm') { console.log('vm') }
+    if (selectedValue === 'web3') {
+      var endpoint = prompt('Please type Web3 Provider Endpoint', 'http://localhost:8545')
+      setProviderFromEndpoint(endpoint)
+      if (executionContext === 'web3') {
+        self.event.trigger('web3EndpointChanged')
+      }
     }
   }
 }
