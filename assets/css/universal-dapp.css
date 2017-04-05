@@ -1,5 +1,5 @@
 .udapp {
-	padding: 1em;
+	padding: .5em;
 	border: 1px dotted #4D5686;
 	position: relative;
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
@@ -42,7 +42,6 @@
 }
 
 .udapp .contract {
-	margin-top: 3em;
 	clear: both;
 }
 
@@ -53,15 +52,19 @@
 
 .udapp .title {
 	margin-bottom: 0.4em;
-	padding: 1em 0;
-	background-color: rgba(255, 255, 255, 0.5);
+	padding: 1em;
+	background-color: #C6CFF7;
 	font-weight: bold;
 	display: flex;
 	justify-content: space-between;
 	word-wrap: break-word;
 	position: relative;
+	border-radius: 3px;
 }
 
+.udapp .title:hover {
+	opacity: 0.8;
+}
 .udapp .title .size {
 	font-weight: normal;
 }
@@ -139,6 +142,7 @@
 }
 
 .udapp .instance .title {
+	content: "\25BC";
 	cursor: pointer;
 }
 

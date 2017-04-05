@@ -149,6 +149,7 @@ body {
 
 #output {
     display: block;
+    padding: 1em;
 }
 
 #header {
@@ -243,10 +244,6 @@ body {
     border-radius: 3px;
     display: inline-block;
     padding: 0 0.6em;
-}
-
-#header #optionViews .hide {
-    display: none;
 }
 
 #header .info {
